@@ -1,0 +1,2 @@
+import LoginForm from "@/components/LoginForm";
+export default function Login(){return <main className="narrow page"><small className="eyebrow">CUSTOMER & ADMIN ACCESS</small><h1>Welcome <em>Back.</em></h1><p className="muted">Masuk menggunakan akun yang sudah terdaftar.</p><LoginForm/></main>}

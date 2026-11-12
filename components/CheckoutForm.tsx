@@ -1,0 +1,8 @@
+"use client";
+import {useState} from "react";
+type P={id:number;title:string;game:string;price:number};
+export default function CheckoutForm({product}:{product:P}){
+ const [name,setName]=useState("");const [phone,setPhone]=useState("");const [notes,setNotes]=useState("");const [error,setError]=useState("");const [busy,setBusy]=useState(false);
+ async function submit(e:React.FormEvent){e.preventDefault();setBusy(true);setError("");const r=await fetch("/api/orders",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({productId:product.id,customerName:name,customerPhone:phone,notes})});const j=await r.json();setBusy(false);if(!r.ok){setError(j.error||"Gagal membuat pesanan");return;}window.location.href=`/orders?created=${j.order.order_code}`;}
+ return <form className="panel form" onSubmit={submit}><div className="order-product"><small>{product.game}</small><b>{product.title}</b><strong>{new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0}).format(product.price)}</strong></div><label>Nama pemesan<input required maxLength={80} value={name} onChange={e=>setName(e.target.value)}/></label><label>Nomor WhatsApp<input required inputMode="tel" maxLength={20} value={phone} onChange={e=>setPhone(e.target.value)}/></label><label>Catatan (opsional)<textarea maxLength={500} value={notes} onChange={e=>setNotes(e.target.value)}/></label><p className="muted tiny">Setelah pesanan dibuat, admin akan mengirim instruksi pembayaran manual. Pastikan nomor WhatsApp aktif.</p><button className="button" disabled={busy}>{busy?"Membuat pesanan...":"Buat Pesanan"}</button>{error&&<p className="error">{error}</p>}</form>
+}

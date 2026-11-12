@@ -1,0 +1,9 @@
+import {requireAdmin} from "@/lib/auth";import {createAdminClient} from "@/lib/supabase/admin";import {redirect} from "next/navigation";import AdminOrderActions from "@/components/AdminOrderActions";
+export default async function AdminOrders(){
+ const a=await requireAdmin();if(!a.ok)redirect("/login");
+ const db=createAdminClient();const {data:orders}=await db.from("orders").select("id,order_code,product_title,customer_name,customer_phone,total,status,created_at,admin_note,payment_proofs(id,storage_path,payment_reference,created_at)").order("created_at",{ascending:false}).limit(100);
+ const proofPaths=(orders||[]).flatMap(o=>(o.payment_proofs||[]).map((p:any)=>p.storage_path));
+ const signed=new Map<string,string>();
+ if(proofPaths.length){const {data}=await db.storage.from("payment-proofs").createSignedUrls(proofPaths,300);(data||[]).forEach(x=>{if(x.path&&x.signedUrl)signed.set(x.path,x.signedUrl);});}
+ return <main className="wrap page"><small className="eyebrow">ADMIN / ORDER OPERATIONS</small><h1>Manage <em>Orders.</em></h1>{(orders||[]).map(o=><article className="panel order-card" key={o.id}><div className="order-head"><div><small>{o.order_code}</small><h3>{o.product_title}</h3><p>{o.customer_name} · {o.customer_phone}</p></div><span className="status">{o.status}</span></div><b>Rp {o.total.toLocaleString("id-ID")}</b>{(o.payment_proofs||[]).map((p:any)=><p key={p.id} className="proof-link">Bukti: <a href={signed.get(p.storage_path)||"#"} target="_blank" rel="noreferrer">Lihat file privat</a> {p.payment_reference&&`· Ref ${p.payment_reference}`}</p>)}<AdminOrderActions orderId={o.id} status={o.status} note={o.admin_note||""}/></article>)}</main>
+}
