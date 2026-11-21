@@ -1,7 +1,0 @@
-import Link from "next/link";
-import { createClient } from "@/lib/supabase/server";
-export default async function Home(){
- const db=await createClient();
- const {data:products}=await db.from("products").select("id,title,game,price,image_url").eq("is_active",true).order("created_at",{ascending:false}).limit(4);
- return <main><section className="hero"><div className="eyebrow">PREMIUM GAME ACCOUNT MARKETPLACE</div><h1>PLAY BIG.<br/><span>OWN THE LEGEND.</span></h1><p>Temukan akun pilihan PUBG Mobile, Mobile Legends, Free Fire, dan eFootball. Informasi jelas, proses terarah, layanan admin responsif.</p><Link className="button" href="/catalog">Jelajahi Katalog ↗</Link><div className="hero-note">TRANSPARAN · TERKURASI · SUPPORT ADMIN</div></section><section className="wrap"><div className="section-title"><div><small>CURATED FOR YOU</small><h2>Featured <em>Accounts</em></h2></div><Link href="/catalog">Lihat semua →</Link></div><div className="grid">{(products||[]).map(p=><article className="product" key={p.id}>{p.image_url?<img src={p.image_url} alt=""/>:<div className="placeholder">AMF / GAME ACCOUNT</div>}<div className="pad"><small>{p.game}</small><h3>{p.title}</h3><b>{new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0}).format(p.price)}</b></div></article>)}</div>{(!products||products.length===0)&&<p className="muted">Katalog sedang disiapkan. Silakan kembali lagi.</p>}</section></main>
-}
