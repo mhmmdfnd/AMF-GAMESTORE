@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+:root{color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#071426;color:#eaf2ff;font-family:'DM Sans',sans-serif}
+button,a{transition:all .2s ease}
+.container{width:min(1160px,calc(100% - 40px));margin-inline:auto}
+.grid-bg{background-image:linear-gradient(rgba(83,139,205,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(83,139,205,.055) 1px,transparent 1px);background-size:42px 42px}
+.glass{background:rgba(13,29,51,.76);border:1px solid rgba(128,174,230,.13);backdrop-filter:blur(18px)}
+.blue-text{background:linear-gradient(100deg,#fff 5%,#70b5ff 55%,#328cff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.btn-primary{background:linear-gradient(110deg,#328cff,#1764d8);box-shadow:0 8px 30px rgba(35,121,238,.22)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(35,121,238,.34)}
+.card{background:linear-gradient(145deg,rgba(17,39,67,.95),rgba(9,24,43,.95));border:1px solid rgba(128,174,230,.12)}
+.card:hover{border-color:rgba(72,151,255,.48);transform:translateY(-4px)}
